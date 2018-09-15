@@ -41,7 +41,7 @@ with open(tempfile, 'w', encoding='utf-8') as f:
 list = list(range(2, 48))
 list.append(0)
 
-# "曜日"以外を中間ファイルへ出力
+# "曜日"以外を読み込み
 df = pd.read_csv(tempfile, encoding="utf-8", sep=',',usecols=list)
 
 # 札幌市のオープンデータのごみ番号をゴミスキル用に置換
