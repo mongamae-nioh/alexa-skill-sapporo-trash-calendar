@@ -6,7 +6,6 @@ import collections as cl
 import re
 
 # ファイル
-#inputfile = 'C:/Users/admin/PycharmProjects/SapporoTrashCalendar/2017100120191008garvagecollectioncalendar.old.csv'
 inputfile = '2017100120191008garvagecollectioncalendar.csv'
 tempfile = 'temp.csv'
 outputfile = 'insert-dynamodb.json'
