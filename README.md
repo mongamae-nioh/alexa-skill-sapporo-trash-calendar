@@ -34,7 +34,16 @@
 - DynamoDBを使用
 - ハッシュキーを区とエリア番号、ソートキーを日付にしてこの二つのキーでアイテムが一意になるようにした。
 
+### 構成
+| WardCalNo | Date | TrashNo |
+----|----|----|
+| 区とエリア番号 | 日付 | ごみ種別番号 |
+
 ## ファイル構成
 - SapporoTrash.py
   - スキル本体のコード
   - Alexa Skills Kit SDK for Pythonを利用
+
+## ごみ収集データについて
+- 2018/9/30分までは収集カレンダーのPDFからデータ起こし
+- 2018/10/1~は札幌市から公開されている[オープンデータ](https://ckan.pf-sapporo.jp/dataset/garbage_collection_calendar)を利用
