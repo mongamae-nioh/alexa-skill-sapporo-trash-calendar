@@ -47,3 +47,4 @@
 ## ごみ収集データについて
 - 2018/9/30分までは収集カレンダーのPDFからデータ起こし
 - 2018/10/1~は札幌市から公開されている[オープンデータ](https://ckan.pf-sapporo.jp/dataset/garbage_collection_calendar)を利用
+- オープンデータを整形してboto3でDynamoDBへインサートする
