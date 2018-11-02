@@ -43,6 +43,23 @@
 - SapporoTrash.py
   - スキル本体のコード
   - Alexa Skills Kit SDK for Pythonを利用
+- convert_from_csv_to_json.py
+  - 札幌市のごみ収集カレンダーのオープンデータをDynamoDBへINSERTするために変換するスクリプト
+  - スキル公開後にオープンデータ化してくれたためごみ種別を表す番号がバラバラだったため作成
+- delete_item_perday.py
+  - 過去のごみデータは意味が無いのとDynamoDB軽くしたいので前日の収集データを毎日削除するスクリプト
+  - Lambdaで毎日0:00に実行
+- insert_dynamodb_local.py
+  - DynamoDB LocalへデータをINSERTするスクリプト
+  - DB名やリージョンは適宜変更してください
+  - DynamoDBをローカルで検証したい場合はDynamoDM Localがオススメ
+  - [クラメソさんの記事](https://dev.classmethod.jp/etc/try_dynamodb_local/)に詳しく載っている
+- insert_dynamodb_production.py
+  - 本番のDynamoDBへデータをINSERTするスクリプト
+  - リージョンは適宜変更してください
+  - 認証はaws configureなどで
+  
+
 
 ## ごみ収集データについて
 - 2018/9/30分までは収集カレンダーのPDFからデータ起こし
