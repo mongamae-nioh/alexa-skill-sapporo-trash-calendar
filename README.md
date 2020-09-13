@@ -65,3 +65,4 @@
 - 2018/9/30分までは収集カレンダーのPDFからデータ起こし
 - 2018/10/1~は札幌市から公開されている[オープンデータ](https://ckan.pf-sapporo.jp/dataset/garbage_collection_calendar)を利用
 - オープンデータを整形してboto3でDynamoDBへインサートする
+- [2020年8月公開データ](https://ckan.pf-sapporo.jp/dataset/garbage_collection_calendar/resource/3e7862c1-c9df-4b21-b6cf-aca9b89e60c6)ではヘッダが**中央区①**のように変わったためcsvから①〜⑦を手動で置換してからJSNを作成した
