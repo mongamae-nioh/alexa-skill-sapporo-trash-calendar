@@ -6,7 +6,7 @@ import collections as cl
 import re
 
 # ファイル
-inputfile = '2017100120191008garvagecollectioncalendar.csv'
+inputfile = 'garvagecollectioncalendar202010.csv'
 tempfile = 'temp.csv'
 outputfile = 'insert-dynamodb.json'
 
@@ -69,7 +69,7 @@ with open(outputfile, 'a') as f:
             trashno = round(row[wardcalno])
             # 各キーの値
             od['WardCalNo'] = wardcalno
-            od['Date'] = row['?Date']
+            od['Date'] = row['Date']
             od['TrashNo'] = trashno
             # ファイル生成
             json.dump(od,f,indent=4, separators=(',', ': '))
