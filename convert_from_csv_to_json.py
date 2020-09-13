@@ -27,7 +27,15 @@ dic = {
     '白石区': 'shiroishi-',
     '手稲区': 'teine-',
     '清田区': 'kiyota-',
-    '厚別区': 'atsubetsu-'
+    '厚別区': 'atsubetsu-',
+    # 2020年8月のデータではヘッダが中央区①のような表示になったため置換対象を追加
+    '①': '1',
+    '②': '2',
+    '③': '3',
+    '④': '4',
+    '⑤': '5',
+    '⑥': '6',
+    '⑦': '7'
 }
 
 for key, value in dic.items():
@@ -49,15 +57,15 @@ df = pd.read_csv(tempfile, encoding="utf-8", sep=',',usecols=list)
 ## 容器プラ 9 -> 3
 ## 雑がみ 10 -> 5
 ## 枝・葉・草 11 -> 6
-### for python2
 #df = df.replace({8: 4, 9: 3, 10: 5, 11: 6}, regex=True)
-### for python3
 df = df.replace(8, 4).replace(9, 3).replace(10, 5).replace(11, 6)
 # 収集無し NaN -> 0
 df = df.fillna(0)
 
 # 中間ファイル
 df.to_csv(tempfile, index=False)
+
+#print(df)
 
 # 全エリアのDynamoDB INSERT用ファイル生成
 # 書き込まれる順番固定
