@@ -49,7 +49,10 @@ df = pd.read_csv(tempfile, encoding="utf-8", sep=',',usecols=list)
 ## 容器プラ 9 -> 3
 ## 雑がみ 10 -> 5
 ## 枝・葉・草 11 -> 6
-df = df.replace({8: 4, 9: 3, 10: 5, 11: 6}, regex=True)
+### for python2
+#df = df.replace({8: 4, 9: 3, 10: 5, 11: 6}, regex=True)
+### for python3
+df = df.replace(8, 4).replace(9, 3).replace(10, 5).replace(11, 6)
 # 収集無し NaN -> 0
 df = df.fillna(0)
 
