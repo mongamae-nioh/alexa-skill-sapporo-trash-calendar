@@ -39,6 +39,19 @@
 ----|----|----|
 | 区とエリア番号 | 日付 | ごみ種別番号 |
 
+### DynamoDB作成コマンド
+DynamoDBLocalを使って検証するときはAWS CLIで作成する
+
+```
+aws dynamodb create-table \
+--table-name SapporoTrashCalendar \
+--attribute-definitions \
+    AttributeName:Date,AttributeType=S \
+    AttributeName=WardCalNo,AttributeType=S \
+--key-schema AttributeName=WardCalNo,KeyType=HASH AttributeName=Date,KeyType=RANGE \
+--provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+```
+
 ## ファイル構成
 - SapporoTrash.py
   - スキル本体のコード
