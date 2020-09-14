@@ -42,6 +42,10 @@
 ### DynamoDB作成コマンド
 DynamoDBLocalを使って検証するときはAWS CLIで作成する
 
+dynamodb-table-schema.json
+
+aws dynamodb create-table --cli-input-json file://dynamodb-table-schema.json --endpoint-url http://localhost:8000
+
 ```
 aws dynamodb create-table \
 --table-name SapporoTrashCalendar \
@@ -51,6 +55,7 @@ aws dynamodb create-table \
 --key-schema AttributeName=WardCalNo,KeyType=HASH AttributeName=Date,KeyType=RANGE \
 --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
 ```
+
 
 ## ファイル構成
 - SapporoTrash.py
