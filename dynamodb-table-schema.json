@@ -1,0 +1,27 @@
+{
+    "TableName": "SapporoTrashCalendar",
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "Date", 
+            "AttributeType": "S"
+        }, 
+        {
+            "AttributeName": "WardCalNo", 
+            "AttributeType": "S"
+        }
+    ],
+     "KeySchema": [
+        {
+            "KeyType": "HASH", 
+            "AttributeName": "WardCalNo"
+        }, 
+        {
+            "KeyType": "RANGE", 
+            "AttributeName": "Date"
+        }
+    ],
+        "ProvisionedThroughput": {
+        "WriteCapacityUnits": 15,
+        "ReadCapacityUnits": 15
+    }
+}
