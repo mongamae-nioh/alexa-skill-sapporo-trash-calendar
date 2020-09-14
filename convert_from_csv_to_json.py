@@ -28,6 +28,29 @@ dic = {
     '手稲区': 'teine-',
     '清田区': 'kiyota-',
     '厚別区': 'atsubetsu-',
+    # convert month format for dynamodb
+    '-1-': '-01-',
+    '-2-': '-02-',
+    '-3-': '-03-',
+    '-4-': '-04-',
+    '-5-': '-05-',
+    '-6-': '-06-',
+    '-7-': '-07-',
+    '-8-': '-08-',
+    '-9-': '-09-',
+    # convert day format for dynamodb
+    '-1,': '-01,',
+    '-2,': '-02,',
+    '-3,': '-03,',
+    '-4,': '-04,',
+    '-5,': '-05,',
+    '-6,': '-06,',
+    '-7,': '-07,',
+    '-8,': '-08,',
+    '-9,': '-09,'
+}
+
+dic2 = {
     # 2020年8月のデータではヘッダが中央区①のような表示になったため置換対象を追加
     '①': '1',
     '②': '2',
@@ -38,8 +61,14 @@ dic = {
     '⑦': '7'
 }
 
+# convert month and day format for dynamodb
 for key, value in dic.items():
     filedata = filedata.replace(key, value)
+
+# convert header format for dynamodb
+for key, value in dic2.items():
+    filedata = filedata.replace(key, value)
+
 
 # 中間ファイル生成
 with open(tempfile, 'w', encoding='utf-8') as f:
