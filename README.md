@@ -40,11 +40,15 @@
 | 区とエリア番号 | 日付 | ごみ種別番号 |
 
 ### DynamoDB作成コマンド
-DynamoDBLocalを使って検証するときはAWS CLIで作成する
+- DynamoDBLocalを使って検証するときはAWS CLIで作成する
+- dynamodb-table-schema.jsonへテーブル定義を記載している
+- 以下コマンドでテーブルを作成する
 
-dynamodb-table-schema.json
-
+```
 aws dynamodb create-table --cli-input-json file://dynamodb-table-schema.json --endpoint-url http://localhost:8000
+```
+
+jsonなしで作成する場合は以下コマンドで作成
 
 ```
 aws dynamodb create-table \
