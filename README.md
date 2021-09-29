@@ -90,4 +90,4 @@ aws dynamodb create-table \
 - 2018/10/1~は札幌市から公開されている[オープンデータ](https://ckan.pf-sapporo.jp/dataset/garbage_collection_calendar)を利用
 - オープンデータを整形してboto3でDynamoDBへインサートする
 - [2020年8月公開データ](https://ckan.pf-sapporo.jp/dataset/garbage_collection_calendar/resource/3e7862c1-c9df-4b21-b6cf-aca9b89e60c6)ではヘッダが**中央区①**のように変わったためcsvの①〜⑦を置換するロジックをJSON作成pythonへ追加
--[2021年9月公開データ](https://ckan.pf-sapporo.jp/dataset/281fc9c2-7ca5-4aed-a728-0b588e509686/resource/b9a4cf2b-8ffd-4be2-8431-f2d6ef129051)では**曜日**のカラム名が**曜**へ変更された
+- [2021年9月公開データ](https://ckan.pf-sapporo.jp/dataset/281fc9c2-7ca5-4aed-a728-0b588e509686/resource/b9a4cf2b-8ffd-4be2-8431-f2d6ef129051)では**曜日**のカラム名が**曜**へ変更された
