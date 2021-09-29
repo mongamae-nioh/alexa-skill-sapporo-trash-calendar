@@ -5,13 +5,13 @@ import json
 import collections as cl
 import re
 
-# Number of garbage collection patterns
+# ゴミ収集パターンの数(エリアごとの収集データを作るループを回すときに使う)
 number_of_collections = 46
 
 # ファイル
-inputfile = 'b9a4cf2b-8ffd-4be2-8431-f2d6ef129051'
-tempfile = 'temp.csv'
-outputfile = 'insert-dynamodb.json'
+inputfile = 'b9a4cf2b-8ffd-4be2-8431-f2d6ef129051' # オープンデータファイル
+tempfile = 'temp.csv' # オープンデータを加工して使うための中間ファイル
+outputfile = 'insert-dynamodb.json' # DynamoDBへINSERTするファイル
 
 # オープンデータ読み込み
 with open(inputfile, 'r', encoding='utf-8') as f:
@@ -81,33 +81,30 @@ with open(tempfile, 'w', encoding='utf-8') as f:
 exclude_columns = ["_id", "曜"]
 df = pd.read_csv(tempfile, encoding="utf-8", sep=',', usecols=lambda x: x not in exclude_columns)
 
-# format change(str -> date)
+# DynamoDBへINSERTするためにフォーマット変換
 df['Date'] = pd.to_datetime(df['Date'])
 
 # 札幌市のオープンデータのごみ番号をゴミスキル用に置換
+# スキル作成後にオープンデータが公開されたためごみ番号にズレあり
 ## びん・缶・ペット 8 -> 4
 ## 容器プラ 9 -> 3
 ## 雑がみ 10 -> 5
 ## 枝・葉・草 11 -> 6
-#df = df.replace({8: 4, 9: 3, 10: 5, 11: 6}, regex=True)
 df = df.replace(8, 4).replace(9, 3).replace(10, 5).replace(11, 6)
 # 収集無し NaN -> 0
 df = df.fillna(0)
 
-# 中間ファイル
+# 中間ファイルをcsvへ変換
 df.to_csv(tempfile, index=False)
-print(df)
 
 # 全エリアのDynamoDB INSERT用ファイル生成
-# 書き込まれる順番固定
+# 書き込み順番を固定するためodを使う
 od = cl.OrderedDict()
 with open(outputfile, 'a') as f:
     for i in range(1, number_of_collections+1):
         df = pd.read_csv(tempfile, encoding="utf-8", sep=',',usecols=[0, i])
-#        print(df)
         columnsname = df.columns.values
         wardcalno = columnsname[1]
-#        print(wardcalno)
 
         for index, row in df.iterrows():
             # 小数点削除
