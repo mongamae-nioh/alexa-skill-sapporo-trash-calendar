@@ -1,5 +1,6 @@
 # SapporoTrashCalendar
 - 札幌市のごみ収集日に関するAlexaスキル
+  - python3系へ移行しましたので（[こちら](https://github.com/mongamae-nioh/alexa-skill-sapporo-trash-calendar-python3)）をお使いください
 - スキルは[こちら](https://www.amazon.co.jp/mongamae-nioh-%E6%9C%AD%E5%B9%8C%E3%81%94%E3%81%BF%E3%81%AA%E3%81%92%E3%82%AB%E3%83%AC%E3%83%B3%E3%83%80%E3%83%BC/dp/B07GP7XFBW/ref=sr_1_1?s=digital-skills&ie=UTF8&qid=1537202805&sr=1-1&keywords=%E6%9C%AD%E5%B9%8C)
 - [Alexa Skills Kit SDK for Python ](https://github.com/alexa-labs/alexa-skills-kit-sdk-for-python)を使って開発
 
