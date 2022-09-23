@@ -82,6 +82,8 @@ aws dynamodb create-table \
   - 認証はaws configureで設定
   - IAMは特定のテーブルのみ操作できるように設定したほうがよいです
     - 参考：[AWSドキュメント](https://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/reference_policies_examples_dynamodb_specific-table.html)
+  - memo: INSERTするときはDynamoDBのテーブル編集権限を持つAWS権限へ切り替える
+    - export AWS_DEFAULT_PROFILE=ask_cli_default -> aws configure listで確認
   
 
 
@@ -91,3 +93,4 @@ aws dynamodb create-table \
 - オープンデータを整形してboto3でDynamoDBへインサートする
 - [2020年8月公開データ](https://ckan.pf-sapporo.jp/dataset/garbage_collection_calendar/resource/3e7862c1-c9df-4b21-b6cf-aca9b89e60c6)ではヘッダが**中央区①**のように変わったためcsvの①〜⑦を置換するロジックをJSON作成pythonへ追加
 - [2021年9月公開データ](https://ckan.pf-sapporo.jp/dataset/281fc9c2-7ca5-4aed-a728-0b588e509686/resource/b9a4cf2b-8ffd-4be2-8431-f2d6ef129051)では**曜日**のカラム名が**曜**へ変更された
+- [2021年10月公開データ](https://ckan.pf-sapporo.jp/dataset/garbage_collection_calendar/resource/28f303ea-97c2-4c89-8539-b17a5661b0da)のデータ構造は前年から変更なし

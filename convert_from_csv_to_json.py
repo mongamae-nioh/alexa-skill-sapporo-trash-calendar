@@ -9,7 +9,7 @@ import re
 number_of_collections = 46
 
 # ファイル
-inputfile = 'b9a4cf2b-8ffd-4be2-8431-f2d6ef129051' # オープンデータファイル
+inputfile = '28f303ea-97c2-4c89-8539-b17a5661b0da' # オープンデータファイル
 tempfile = 'temp.csv' # オープンデータを加工して使うための中間ファイル
 outputfile = 'insert-dynamodb.json' # DynamoDBへINSERTするファイル
 

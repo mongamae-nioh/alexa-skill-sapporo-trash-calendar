@@ -20,6 +20,5 @@ with open("insert-dynamodb.json") as json_file:
                     'WardCalNo': wardcalno,
                     'Date': date,
                     'TrashNo': trashno
-                    
                 }
             )
