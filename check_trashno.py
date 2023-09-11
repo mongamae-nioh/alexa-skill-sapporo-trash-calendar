@@ -2,12 +2,12 @@
 import sys, codecs
 import boto3
 from boto3.dynamodb.conditions import Key, Attr
-#dynamodb = boto3.resource('dynamodb', region_name='ap-northeast-1')
-dynamodb = boto3.resource('dynamodb',endpoint_url='http://localhost:8000')
+dynamodb = boto3.resource('dynamodb', region_name='ap-northeast-1')
+# dynamodb = boto3.resource('dynamodb',endpoint_url='http://localhost:8000')
 table = dynamodb.Table('SapporoTrashCalendar')
 
 # ここへエリアと日付入力
-date = "2018-10-08"
+date = "2023-09-18"
 wardcalno = "nishi-2"
 
 response = table.query(
@@ -34,4 +34,4 @@ else:
 
 speech_text = "{}です".format(jptrashname)
 
-print speech_text
+print(speech_text)
