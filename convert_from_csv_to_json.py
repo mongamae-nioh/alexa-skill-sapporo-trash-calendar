@@ -4,12 +4,13 @@ import pandas as pd
 import json
 import collections as cl
 import re
+import sys
 
 # ゴミ収集パターンの数(エリアごとの収集データを作るループを回すときに使う)
 number_of_collections = 46
 
 # ファイル
-inputfile = '28f303ea-97c2-4c89-8539-b17a5661b0da' # オープンデータファイル
+inputfile = sys.argv[1] # オープンデータファイル
 tempfile = 'temp.csv' # オープンデータを加工して使うための中間ファイル
 outputfile = 'insert-dynamodb.json' # DynamoDBへINSERTするファイル
 
