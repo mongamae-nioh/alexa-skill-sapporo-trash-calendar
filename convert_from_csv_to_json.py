@@ -10,9 +10,9 @@ import sys
 number_of_collections = 46
 
 # ファイル
-inputfile = sys.argv[1] # オープンデータファイル
-tempfile = 'temp.csv' # オープンデータを加工して使うための中間ファイル
-outputfile = 'insert-dynamodb.json' # DynamoDBへINSERTするファイル
+inputfile = sys.argv[1]  # オープンデータファイル
+tempfile = 'temp.csv'  # オープンデータを加工して使うための中間ファイル
+outputfile = sys.argv[2]  # DynamoDBへINSERTするファイル
 
 # オープンデータ読み込み
 with open(inputfile, 'r', encoding='utf-8') as f:
