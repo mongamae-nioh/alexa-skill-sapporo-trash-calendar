@@ -96,6 +96,7 @@ aws dynamodb create-table \
 - [2021年9月公開データ](https://ckan.pf-sapporo.jp/dataset/281fc9c2-7ca5-4aed-a728-0b588e509686/resource/b9a4cf2b-8ffd-4be2-8431-f2d6ef129051)では**曜日**のカラム名が**曜**へ変更された
 - [2022年9月公開データ](https://ckan.pf-sapporo.jp/dataset/garbage_collection_calendar/resource/28f303ea-97c2-4c89-8539-b17a5661b0da)のデータ構造は前年から変更なし
 - [2023年9月公開データ](https://ckan.pf-sapporo.jp/dataset/garbage_collection_calendar/resource/c1c0f835-bbaf-42d2-8ea2-a71cae8d7389)のデータ構造は前年から変更なし
+- [2024年9月公開データ](https://ckan.pf-sapporo.jp/dataset/garbage_collection_calendar/resource/f13f6d71-1fde-433d-b5c5-c38631fde7ca?inner_span=True)のデータ構造は前年から変更なし
 
 ## ごみデータ更新手順
 1. [DATA-SMART CITY SAPPORO](https://data.pf-sapporo.jp/)から収集カレンダーのデータをダウンロード
