@@ -10,7 +10,10 @@
 
 ## 重要な制約
 - **本番 DynamoDB のテーブル・アイテムは削除しない。年次更新は追加のみ**（`.claude/adr/0001-production-add-only.md`）
-- 多くのスクリプトは **本番がデフォルト接続先**。ローカル操作は `AWS_ENDPOINT_URL_DYNAMODB=http://localhost:8000` を付け、endpoint を assert してから実行（`.claude/adr/0002-local-endpoint-via-env.md`）
+- **DynamoDB に書き込む・削除するスクリプトを実行する前に、接続先（コード上の endpoint とランタイムの実際の endpoint）の両方を確認する**。多くのスクリプトは本番がデフォルト接続先
+  - `batch_insert_to_dynamodb.py` / `delete_all_items.py` はローカル操作時 `--local` を付ける。フラグなしは本番（確認プロンプト、`--yes` で省略）（`.claude/adr/0003-local-flag-and-prod-confirmation.md`）
+  - 新しく DB 操作スクリプトを作るときは `dynamodb_target.py` を使う
+- テスト: `python -m pytest tests -q`
 - 本番への書き込みは人間の明示的な OK を得てから
 - リポジトリは公開（GitHub）。AWS アカウント ID・IAM ユーザー名・認証情報をコミットしない
 - `docker/dynamodb/`（DynamoDB Local のデータ）はコミットしない

@@ -1,7 +1,7 @@
 # ADR-0002: ローカル/本番の接続先は環境変数 `AWS_ENDPOINT_URL_DYNAMODB` で切り替える
 
 - 日付: 2026-09-27
-- ステータス: 採用（暫定。スクリプトへのフラグ追加は未実施）
+- ステータス: ADR-0003 により置き換え（2026-09-27）
 
 ## 背景
 `batch_insert_to_dynamodb.py` など多くのスクリプトは `boto3.resource('dynamodb', region_name='ap-northeast-1')` で

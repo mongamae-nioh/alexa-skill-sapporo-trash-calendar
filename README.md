@@ -109,9 +109,8 @@ python convert_from_csv_to_json.py <Download file> insert-dynamodb.json
 ```
 3. DynamoDB localへインサートして問題がなければproductionへインサート
 ```sh
-# ローカル（環境変数を付けないと本番に書き込むので注意）
-AWS_ENDPOINT_URL_DYNAMODB=http://localhost:8000 AWS_ACCESS_KEY_ID=dummy AWS_SECRET_ACCESS_KEY=dummy AWS_DEFAULT_REGION=ap-northeast-1 \
-  python batch_insert_to_dynamodb.py insert-dynamodb.json
-# 本番（追加のみ）
+# ローカル（--local を付けないと本番が対象になるので注意）
+python batch_insert_to_dynamodb.py --local insert-dynamodb.json
+# 本番（追加のみ。確認プロンプトで yes と入力）
 python batch_insert_to_dynamodb.py insert-dynamodb.json
 ```

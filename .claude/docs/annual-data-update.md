@@ -13,7 +13,7 @@ DynamoDB（ローカル → 本番）へ投入する作業の手順。
 | # | ルール | 理由 |
 |---|---|---|
 | 1 | **本番のテーブル・アイテムは削除しない。本番は「追加のみ」** | 本番テーブルは稼働中の Alexa スキルが参照している。過去データは Lambda が毎日削除するので手で消す必要はない（[ADR-0001](../adr/0001-production-add-only.md)） |
-| 2 | **ローカル操作時は必ず `AWS_ENDPOINT_URL_DYNAMODB=http://localhost:8000` を付け、実行前に endpoint を assert する** | `batch_insert_to_dynamodb.py` / `delete_all_items.py` などはコード上 **本番がデフォルト**。付け忘れると本番に書き込む・消す（[ADR-0002](../adr/0002-local-endpoint-via-env.md)） |
+| 2 | **ローカル操作は `--local` を付ける。DB を操作するコマンドは実行前に接続先（コード上の endpoint と実行時の `接続先:` 表示）を確認する** | `batch_insert_to_dynamodb.py` / `delete_all_items.py` は **フラグなし = 本番**（確認プロンプトあり）。それ以外の古いスクリプト（`check_trashno.py` 等）はフラグ未対応で本番直結（[ADR-0003](../adr/0003-local-flag-and-prod-confirmation.md)） |
 | 3 | 本番投入前に **既存データと日付が重複しないこと** を確認する | `put_item` は同一キーを黙って上書きする |
 | 4 | 本番投入は **人間の明示的な OK を得てから** 行う | 外部公開中サービスへの書き込みのため |
 
@@ -77,33 +77,26 @@ python -c "import json;d=json.load(open('insert-dynamodb.json'));print(len(d),d[
 ### Step 4. ローカル（DynamoDB Local）で検証
 ```sh
 docker compose up -d        # dynamodb-local コンテナが起動済みなら不要（docker ps で確認）
-export AWS_ACCESS_KEY_ID=dummy AWS_SECRET_ACCESS_KEY=dummy \
-       AWS_DEFAULT_REGION=ap-northeast-1 AWS_ENDPOINT_URL_DYNAMODB=http://localhost:8000
+python -m pytest tests -q   # 接続先切り替えロジックのテスト
 ```
 
-4-1. ローカルを空にする（テーブル削除 → 再作成。**ローカル限定**。endpoint を assert してから実行）
+4-1. ローカルを空にする（**`--local` 必須**。出力の `接続先: http://localhost:8000 (ローカル)` を確認）
 ```sh
-python -c "
-import boto3
-c = boto3.client('dynamodb')
-assert c.meta.endpoint_url == 'http://localhost:8000', c.meta.endpoint_url
-c.delete_table(TableName='SapporoTrashCalendar')
-c.get_waiter('table_not_exists').wait(TableName='SapporoTrashCalendar')
-" && python create_dynamodb_table.py
+python delete_all_items.py --local
 ```
-（テーブルが存在しない初回は delete をスキップして `create_dynamodb_table.py` のみ）
+（テーブルが存在しない初回は `python create_dynamodb_table.py`。このスクリプトは localhost 固定）
 
 4-2. 投入
 ```sh
-python -c "import boto3;assert boto3.resource('dynamodb').meta.client.meta.endpoint_url=='http://localhost:8000'" \
-  && python batch_insert_to_dynamodb.py insert-dynamodb.json
+python batch_insert_to_dynamodb.py --local insert-dynamodb.json
 ```
 
 4-3. 検証: Scan でページングしながら件数カウント（= Step 3 の件数）、代表アイテムを `get_item`。
+アドホックな Python で確認する場合は `endpoint_url='http://localhost:8000'` とダミー認証情報を明示する。
 その後 **人間にローカルでの動作確認を依頼**し、OK をもらう。
 
 ### Step 5. 本番へ追加投入
-**別シェル or `unset AWS_ENDPOINT_URL_DYNAMODB AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY` で環境変数を必ず外す。**
+`AWS_ENDPOINT_URL_DYNAMODB` / ダミーの `AWS_ACCESS_KEY_ID` などが環境に残っていないこと（残っていると本番指定でもスクリプトが RuntimeError で止まる）。
 
 5-1. 接続確認（読み取りのみ）
 ```sh
@@ -129,10 +122,11 @@ print('prod', len(ds), min(ds), max(ds)); print('new', min(new), max(new)); prin
 - `overlap False` を確認。True なら **止めて人間に相談**（上書きになるため）
 - 本番の既存件数を控えておく（5-4 で使う）
 
-5-3. 人間の OK を得てから投入
+5-3. 人間の OK を得てから投入（フラグなし = 本番。確認プロンプトが出る。Claude が実行する場合は OK を得たうえで `--yes`）
 ```sh
-python batch_insert_to_dynamodb.py insert-dynamodb.json
+python batch_insert_to_dynamodb.py --yes insert-dynamodb.json
 ```
+出力の `接続先: https://dynamodb.ap-northeast-1.amazonaws.com (本番)` を確認する。
 
 5-4. 検証
 - Scan（`Select='COUNT'`・ページング）で総件数 = **既存件数 + 投入件数**
@@ -165,8 +159,9 @@ python batch_insert_to_dynamodb.py insert-dynamodb.json
 
 ## 4. 既知の落とし穴
 
-- **`batch_insert_to_dynamodb.py` / `delete_all_items.py` / `check_trashno.py` / `insert_dynamodb_production.py` は本番がデフォルト接続先**。ローカル用途では必ず環境変数で切り替え + assert
-- `delete_all_items.py` は本番に向いている。**本番では絶対に実行しない**
+- `batch_insert_to_dynamodb.py` / `delete_all_items.py` は **フラグなし = 本番**（確認プロンプトあり、2026-09 に `--local` 追加）
+- `check_trashno.py` / `insert_dynamodb_production.py` / `delete_item_perday.py` はフラグ未対応で **本番直結**
+- `delete_all_items.py` は **本番では絶対に実行しない**（必ず `--local`）
 - `insert_dynamodb_local.py` / `insert_dynamodb_production.py` は旧スクリプト（入力ファイル名固定）。現在は `batch_insert_to_dynamodb.py` を使う
 - `convert_from_csv_to_json.py` は 2026-09 に以下を修正済み（コミット 6d6b683）
   - 出力ファイルを追記モード `'a'` で開いていたため、既存 `insert-dynamodb.json` があると壊れた JSON になった → `'w'` に修正
