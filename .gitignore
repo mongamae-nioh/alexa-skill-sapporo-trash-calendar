@@ -5,3 +5,5 @@ share
 pyvenv.cfg
 DynamoDBLocal*
 docker/dynamodb/
+__pycache__/
+.pytest_cache/

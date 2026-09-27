@@ -1,16 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import boto3
-import sys
-
-# DynamoDBクライアントを作成
-# dynamodb = boto3.resource('dynamodb',endpoint_url='http://localhost:8000')
-dynamodb = boto3.resource('dynamodb', region_name='ap-northeast-1')
-table = dynamodb.Table('SapporoTrashCalendar')
+from dynamodb_target import build_parser, get_table
 
 # 全アイテムを削除
-def delete_all_items():
+def delete_all_items(table):
     # テーブルをスキャン
     scan = table.scan()
     count = 0
@@ -46,8 +40,7 @@ def delete_all_items():
     print(f'合計 {count} 件のアイテムを削除しました。')
 
 if __name__ == '__main__':
-    response = input('本当にすべてのデータを削除しますか？ (yes/no): ')
-    if response.lower() == 'yes':
-        delete_all_items()
-    else:
-        print('キャンセルしました。')
+    # 本番の場合は get_table 内で確認プロンプトが出る
+    args = build_parser('テーブルの全アイテムを削除する（指定なしは本番。本番では通常使わない）').parse_args()
+    table = get_table(args, '全アイテムの削除')
+    delete_all_items(table)
