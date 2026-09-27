@@ -97,11 +97,21 @@ aws dynamodb create-table \
 - [2022年9月公開データ](https://ckan.pf-sapporo.jp/dataset/garbage_collection_calendar/resource/28f303ea-97c2-4c89-8539-b17a5661b0da)のデータ構造は前年から変更なし
 - [2023年9月公開データ](https://ckan.pf-sapporo.jp/dataset/garbage_collection_calendar/resource/c1c0f835-bbaf-42d2-8ea2-a71cae8d7389)のデータ構造は前年から変更なし
 - [2024年9月公開データ](https://ckan.pf-sapporo.jp/dataset/garbage_collection_calendar/resource/f13f6d71-1fde-433d-b5c5-c38631fde7ca?inner_span=True)のデータ構造は前年から変更なし
+- 2025年9月公開データ、2026年9月公開データのデータ構造は前年から変更なし
 
 ## ごみデータ更新手順
+詳細な手順・安全ルール・検証方法は [.claude/docs/annual-data-update.md](.claude/docs/annual-data-update.md) を参照（本番DynamoDBは追加のみ・削除禁止）
+
 1. [DATA-SMART CITY SAPPORO](https://data.pf-sapporo.jp/)から収集カレンダーのデータをダウンロード
 2. データ変換
 ```sh
 python convert_from_csv_to_json.py <Download file> insert-dynamodb.json
 ```
-1. DynamoDB localへインサートして問題がなければproductionへインサート
+3. DynamoDB localへインサートして問題がなければproductionへインサート
+```sh
+# ローカル（環境変数を付けないと本番に書き込むので注意）
+AWS_ENDPOINT_URL_DYNAMODB=http://localhost:8000 AWS_ACCESS_KEY_ID=dummy AWS_SECRET_ACCESS_KEY=dummy AWS_DEFAULT_REGION=ap-northeast-1 \
+  python batch_insert_to_dynamodb.py insert-dynamodb.json
+# 本番（追加のみ）
+python batch_insert_to_dynamodb.py insert-dynamodb.json
+```
