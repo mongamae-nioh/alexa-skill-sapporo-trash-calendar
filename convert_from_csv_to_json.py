@@ -138,7 +138,7 @@ df.to_csv(tempfile, index=False)
 # 全エリアのDynamoDB INSERT用ファイル生成
 # 書き込み順番を固定するためodを使う
 od = cl.OrderedDict()
-with open(outputfile, 'a') as f:
+with open(outputfile, 'w', encoding='utf-8') as f:
     for i in range(1, number_of_collections+1):
         df = pd.read_csv(tempfile, encoding="utf-8", sep=',',usecols=[0, i])
         columnsname = df.columns.values
@@ -164,10 +164,10 @@ with open(outputfile, 'r', encoding='utf-8') as f:
     for key, value in dict3.items():
         filedata = filedata.replace(key, value)
         # ファイルの先頭を [ へ置換
-        result = re.sub('\A', '[\n', filedata)
+        result = re.sub(r'\A', '[\n', filedata)
     # 最後のカンマ消して ] へ置換
     result = result[:-2]
-    result = re.sub('\Z', '\n]', result)
+    result = re.sub(r'\Z', '\n]', result)
 
 with open(outputfile, 'w', encoding='utf-8') as f:
     f.write(result)
